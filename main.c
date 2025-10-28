@@ -21,26 +21,102 @@ int main(int argc, char *argv[]) {
     Q = (int) sqrt(P);
 
     if (rank == 0) {  
-        Di = read_input(&N, P, Q); //lê a matriz e armazena em Di; a funçao read_input está em matrix.c
+        Di = read_input(&N, P, Q); //lê a matriz e armazena em Di
+        print_matrix(Di, N);
+        Df = allocate_matrix(N);
     }
 
     MPI_Bcast(&N, 1, MPI_INT, 0, MPI_COMM_WORLD); //faz broadcast de N para todos os processos
+
     int block_size = N / Q;
+    
+    MPI_Datatype blocktype, resized_block;
+    MPI_Type_vector(block_size,       //numero de linhas a enviar (blocos)
+                    block_size,       //numero de elementos por linha
+                    N,                //stride - numero de elementos entre inícios de linhas consecutivas
+                    MPI_INT,
+                    &blocktype);
+
+    MPI_Type_create_resized(blocktype,                 //tipo antigo
+                            0,                         //endereço inicial
+                            block_size * sizeof(int),  //distância entre elementos consecutivos -- alternativa: só sizeof(int); mudar os displs
+                            &resized_block);
+    MPI_Type_commit(&resized_block);
+    MPI_Type_free(&blocktype);
+
+    //definir os displacements e counts para enviar por scatterv
+    int *displs, *counts;
+    if (rank == 0) {
+        displs = malloc(P * sizeof(int));
+        counts = malloc(P * sizeof(int));
+        for (int i = 0; i < Q; ++i) {
+            for (int j = 0; j < Q; ++j) {
+                int dest = i * Q + j;
+                counts[dest] = 1; 
+                displs[dest] = block_size * i * Q + j; //ou i*block_size*N + j*block_size
+            }
+        }
+    }
 
     int **A_submatrix = allocate_matrix(block_size);
 
-    //proximos passos em main:
-    //distribuir as submatrizes pelos processos (usando scatter? eu acho), criar um tipo para enviar os dados corretos
-    //chamar o fox algorithm
-    //obter as matrizes parciais de cada processo (usando gather?) e construir a matriz final
+    MPI_Scatterv((rank == 0) ? Di[0] : NULL,  //variavel que contém os elementos a serem enviados (Di)
+                counts,                       //numero de elementos a enviar a cada processo (1 para todos)
+                displs,                       //deslocamentos para cada processo
+                resized_block,                //tipo a ser enviado
+                A_submatrix[0],               //variavel onde os dados vao ser armazenados
+                block_size * block_size,      //quantidade de elementos que cada processo vai receber
+                MPI_INT,                      //tipo a ser recebido
+                0,
+                MPI_COMM_WORLD);
+
+    //TESTE
+    printf("rank %d recebeu:\n", rank);
+    print_matrix(A_submatrix, block_size);
+    
+    int **C = allocate_matrix(block_size);
+
+    //chamar o fox algorithm: 
+    //fox_min_plus(N, block_size, Q, A_submatrix, C, MPI_COMM_WORLD); --> descomentar quando estiver pronto; enquanto isso, em baixo está uma funçao de teste que duplica os elementos da matriz
+
+    for (int i = 0; i < block_size; i++) {
+        for (int j = 0; j < block_size; j++) {
+            C[i][j] = A_submatrix[i][j] * 2;
+        }
+    }
+    
+    //TESTE
+    printf("rank %d matriz C:\n", rank);
+    print_matrix(C, block_size);
+
+    //obter as matrizes parciais de cada processo usando gather e construir a matriz Df
+    MPI_Gatherv(C[0],                     //variavel com os dados a enviar
+                block_size * block_size,  //quantidade de elementos a enviar por processo
+                MPI_INT,                  //tipo a ser enviado
+                Df ? Df[0] : NULL,        //variavel que receberá todos os dados (Df)
+                counts,                   //quantidades de elementos a serem recebidos de cada processo
+                displs,                   //deslocamentos dentro de Df, indica onde guardar os dados de cada processo
+                resized_block,            //tipo a ser recebido
+                0,                        //processo root que recebe os dados
+                MPI_COMM_WORLD);
 
     if (rank == 0) {
-        print_matrix(Di, N); //funçao em matrix.c
+        printf("MATRIZ FINAL:\n");
+        print_matrix(Df, N);
+        free_matrix(Di);
+        free_matrix(Df);
     }
     
     //libertar o espaço usado nas matrizes e assim
+    free(displs);
+    free(counts);
+    free_matrix(A_submatrix);
+    free_matrix(C);
+    MPI_Type_free(&resized_block);
 
     MPI_Finalize();
     return 0;
 }
+
+
 
