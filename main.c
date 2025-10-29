@@ -77,14 +77,8 @@ int main(int argc, char *argv[]) {
     int **C = allocate_matrix(block_size);
 
     //chamar o fox algorithm: 
-    //fox_min_plus(N, block_size, Q, A_submatrix, C, MPI_COMM_WORLD); --> descomentar quando estiver pronto; enquanto isso, em baixo está uma funçao de teste que duplica os elementos da matriz
+    fox_min_plus(N, block_size, Q, A_submatrix, C, MPI_COMM_WORLD);
 
-    for (int i = 0; i < block_size; i++) {
-        for (int j = 0; j < block_size; j++) {
-            C[i][j] = A_submatrix[i][j] * 2;
-        }
-    }
-    
     //TESTE
     printf("rank %d matriz C:\n", rank);
     print_matrix(C, block_size);

@@ -36,13 +36,12 @@ void fox_min_plus(int N, int block_size, int Q, int **A, int **C, MPI_Comm comm)
     //alocar espaço para as matrizes a serem usadas nos calculos
     int **A_local = allocate_matrix(block_size);
     int **B_local = allocate_matrix(block_size);
-    int **C_local = allocate_matrix(block_size);
     int **A_temp = allocate_matrix(block_size);
     
     //inicializa C_local com INF 
     for (int i = 0; i < block_size; i++)
         for (int j = 0; j < block_size; j++)
-            C_local[i][j] = INF;
+            C[i][j] = INF;
 
     //copia a submatriz A recebida para A_local e B_local
     copy_matrix(block_size, A, A_local);
@@ -51,7 +50,7 @@ void fox_min_plus(int N, int block_size, int Q, int **A, int **C, MPI_Comm comm)
     //proximos passos:
     //executar fases do fox (estive a tentar fazer mas deu-me dor de cabeça ainda estou a tentar perceber), recorrendo a funçao min plus multiply em matrix.c
 
-    for (int iter; iter=0; iter++){
+    for (int iter=0; iter<Q; iter++){
         int root_in_row = (row+ iter)%Q; 
 
         // Sender process
@@ -60,13 +59,28 @@ void fox_min_plus(int N, int block_size, int Q, int **A, int **C, MPI_Comm comm)
         }else{
             //receiving processes
             MPI_Bcast(&A_temp[row][col], block_size*block_size, MPI_INT, root_in_row, row_comm);
+
+            if(coords[0]==0 & coords[1]==1) {
+                printf("A_temp, iteraçao %d:\n", iter);
+                print_matrix(A_temp, block_size);
+            }
         }
 
         // This lines makes it so that the pointer A_used is equal to A_local or A_temp depending on the condition 
         int **A_used = (col == root_in_row) ? A_local : A_temp;
 
         // Multiplication operation
-        min_plus_multiply(block_size, A_used, B_local, C_local);
+        if(coords[0]==0 & coords[1]==1) {
+            printf("TESTE FUNÇAO %d, %d, iteraçao: %d\n", coords[0], coords[1], iter);
+            print_matrix(C, block_size);
+            printf("A_used:\n");
+            print_matrix(A_used, block_size);
+            printf("B_local:\n");
+            print_matrix(B_local, block_size);
+        }
+        min_plus_multiply(block_size, A_used, B_local, C);
+        
+        
 
         // B up shift
         int scr, dest;
@@ -80,7 +94,6 @@ void fox_min_plus(int N, int block_size, int Q, int **A, int **C, MPI_Comm comm)
 
     free_matrix(A_local);
     free_matrix(B_local);
-    free_matrix(C_local);
     free_matrix(A_temp);
     MPI_Comm_free(&row_comm);
     MPI_Comm_free(&col_comm);
