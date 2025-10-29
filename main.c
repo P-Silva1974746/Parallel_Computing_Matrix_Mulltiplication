@@ -4,7 +4,7 @@
 #include "matrix.h"
 #include <math.h>
 
-void fox_min_plus(int N, int block_size, int Q, int **A, int **C, MPI_Comm comm);
+void repeated_squaring (int N, int block_size, int Q, int **A, int **C, MPI_Comm comm);
 
 int main(int argc, char *argv[]) {
     int N;
@@ -23,6 +23,13 @@ int main(int argc, char *argv[]) {
     if (rank == 0) {  
         Di = read_input(&N, P, Q); //lê a matriz e armazena em Di
         print_matrix(Di, N);
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                if (Di[i][j] == 0 && i != j) {
+                    Di[i][j] = INF;
+                }
+            }
+        }
         Df = allocate_matrix(N);
     }
 
@@ -70,18 +77,10 @@ int main(int argc, char *argv[]) {
                 0,
                 MPI_COMM_WORLD);
 
-    //TESTE
-    printf("rank %d recebeu:\n", rank);
-    print_matrix(A_submatrix, block_size);
-    
     int **C = allocate_matrix(block_size);
 
     //chamar o fox algorithm: 
-    fox_min_plus(N, block_size, Q, A_submatrix, C, MPI_COMM_WORLD);
-
-    //TESTE
-    printf("rank %d matriz C:\n", rank);
-    print_matrix(C, block_size);
+    repeated_squaring (N, block_size, Q, A_submatrix, C, MPI_COMM_WORLD);
 
     //obter as matrizes parciais de cada processo usando gather e construir a matriz Df
     MPI_Gatherv(C[0],                     //variavel com os dados a enviar

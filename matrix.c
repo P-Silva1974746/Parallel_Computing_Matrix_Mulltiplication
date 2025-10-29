@@ -59,13 +59,10 @@ void copy_matrix(int n, int **src, int **dest) {
 void min_plus_multiply(int n, int **A, int **B, int **C) {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
-            int min_val = INF;
             for (int k = 0; k < n; k++) {
                 int val = A[i][k] + B[k][j];
-                if (val < min_val)
-                    min_val = val;
+                if (val < C[i][j]) C[i][j] = val;
             }
-            C[i][j] = min_val;
         }
     }
 }
