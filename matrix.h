@@ -13,5 +13,6 @@ void free_matrix(int **m);
 void copy_matrix(int n, int **src, int **dest);
 void min_plus_multiply(int n, int **A, int **B, int **C);
 void print_matrix(int **M, int N);
+int** read_input_seq(int *N);
 
 #endif
