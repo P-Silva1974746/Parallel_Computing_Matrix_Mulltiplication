@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
 
     if (rank == 0) {  
         Di = read_input(&N, P, Q); //lê a matriz e armazena em Di
-        print_matrix(Di, N);
+        //print_matrix(Di, N);
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
                 if (Di[i][j] == 0 && i != j) {
@@ -83,30 +83,61 @@ int main(int argc, char *argv[]) {
     repeated_squaring (N, block_size, Q, A_submatrix, C, MPI_COMM_WORLD);
 
     //obter as matrizes parciais de cada processo usando gather e construir a matriz Df
-    MPI_Gatherv(C[0],                     //variavel com os dados a enviar
-                block_size * block_size,  //quantidade de elementos a enviar por processo
-                MPI_INT,                  //tipo a ser enviado
-                Df ? Df[0] : NULL,        //variavel que receberá todos os dados (Df)
-                counts,                   //quantidades de elementos a serem recebidos de cada processo
-                displs,                   //deslocamentos dentro de Df, indica onde guardar os dados de cada processo
-                resized_block,            //tipo a ser recebido
-                0,                        //processo root que recebe os dados
-                MPI_COMM_WORLD);
+    // MPI_Gatherv(C[0],                     //variavel com os dados a enviar
+    //             block_size * block_size,  //quantidade de elementos a enviar por processo
+    //             MPI_INT,                  //tipo a ser enviado
+    //             Df ? Df[0] : NULL,        //variavel que receberá todos os dados (Df)
+    //             counts,                   //quantidades de elementos a serem recebidos de cada processo
+    //             displs,                   //deslocamentos dentro de Df, indica onde guardar os dados de cada processo
+    //             resized_block,            //tipo a ser recebido
+    //             0,                        //processo root que recebe os dados
+    //             MPI_COMM_WORLD);
+
+
+    int *flat_C = NULL;
+    if (rank == 0){
+        flat_C = malloc(P * block_size * block_size * sizeof(int));
+    }
+
+    MPI_Gather(C[0], block_size * block_size, MPI_INT,
+               flat_C, block_size * block_size, MPI_INT,
+               0, MPI_COMM_WORLD);
+
+
 
     if (rank == 0) {
-        printf("MATRIZ FINAL:\n");
+    // Rebuild Df from gathered blocks
+        for (int i = 0; i < Q; i++) {          // block row
+            for (int j = 0; j < Q; j++) {      // block column
+                int src_rank = i * Q + j;      // rank that sent this block
+                int *src_block = flat_C + src_rank * block_size * block_size;
+
+                for (int bi = 0; bi < block_size; bi++) {
+                    for (int bj = 0; bj < block_size; bj++) {
+                        Df[i * block_size + bi][j * block_size + bj] =
+                            src_block[bi * block_size + bj];
+                    }
+                }
+            }
+        }
+    }
+    if (rank == 0) {
+        //printf("MATRIZ FINAL:\n");
         print_matrix(Df, N);
         free_matrix(Di);
         free_matrix(Df);
     }
     
     //libertar o espaço usado nas matrizes e assim
-    free(displs);
-    free(counts);
+    if(rank==0){
+        free(displs);
+        free(counts);
+    }
+
     free_matrix(A_submatrix);
     free_matrix(C);
     MPI_Type_free(&resized_block);
-
+    free(flat_C);
     MPI_Finalize();
     return 0;
 }
