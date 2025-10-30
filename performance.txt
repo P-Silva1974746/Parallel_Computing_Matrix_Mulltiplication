@@ -1,0 +1,357 @@
+input6:
+	
+	run-fox-machines (4):
+		real	0m0,946s
+		user	0m0,129s
+		sys	0m0,130s
+
+	run-fox-machines (9):
+		real	0m1,284s
+		user	0m0,179s
+		sys	0m0,236s
+
+	run-fox-machines (36):
+		real	0m1,202s
+		user	0m0,582s
+		sys	0m0,800s
+		
+		
+	------------------------
+	
+	
+	run-fox-one-machine (4):
+		real	0m0,511s
+		user	0m0,135s
+		sys	0m0,118s
+
+	run-fox-one-machine (9):
+		real	0m0,606s
+		user	0m0,261s
+		sys	0m0,296s
+
+	run-fox-one-machine (36):
+		real	0m0,705s
+		user	0m1,062s
+		sys	0m1,429s
+		
+		
+	------------------------
+	
+	
+	run-seq:
+		real	0m0,432s
+		user	0m0,048s
+		sys	0m0,028s
+
+
+
+input300:
+
+	run-fox-machines (4):
+		real	0m1,561s
+		user	0m0,716s
+		sys	0m0,144s
+		
+	run-fox-machines (9):
+		real	0m1,255s
+		user	0m1,402s
+		sys	0m0,211s
+		
+	run-fox-machines (16):
+		real	0m1,432s
+		user	0m1,844s
+		sys	0m0,397s
+
+	run-fox-machines (25):
+		real	0m1,672s
+		user	0m3,397s
+		sys	0m1,496s
+		
+	run-fox-machines (36):
+		real	0m1,518s
+		user	0m1,622s
+		sys	0m1,542s
+		
+		
+	------------------------
+	
+	
+	run-fox-one-machine (4):
+		real	0m1,366s
+		user	0m0,709s
+		sys	0m0,141s
+
+	run-fox-one-machine (9):
+		real	0m0,777s
+		user	0m1,023s
+		sys	0m0,804s
+
+	run-fox-one-machine (16):
+		real	0m1,190s
+		user	0m1,902s
+		sys	0m0,613s
+
+	run-fox-one-machine (25):
+		real	0m1,340s
+		user	0m2,138s
+		sys	0m2,188s
+
+	run-fox-one-machine (36):
+		real	0m1,670s
+		user	0m2,555s
+		sys	0m3,001s
+		
+		
+	------------------------
+	
+	
+	run-seq:
+		real	0m0,964s
+		user	0m0,543s
+		sys	0m0,033s
+		
+
+
+input600:
+
+	run-fox-machines (4):
+		real	0m2,246s
+		user	0m4,758s
+		sys	0m0,186s
+	
+	run-fox-machines (9):
+		real	0m3,724s
+		user	0m11,118s
+		sys	0m0,243s
+		
+	run-fox-machines(16):
+		real	0m1,977s
+		user	0m11,172s
+		sys	0m0,515s
+
+	run-fox-machines (25):
+		real	0m2,170s
+		user	0m9,624s
+		sys	0m2,899s
+
+	run-fox-machines (36):
+		real	0m2,226s
+		user	0m6,927s
+		sys	0m5,104s
+		
+		
+	------------------------
+	
+	
+	run-fox-one-machine (4):
+		real	0m1,945s
+		user	0m4,909s
+		sys	0m0,128s
+
+	run-fox-one-machine (9):
+		real	0m2,033s
+		user	0m6,873s
+		sys	0m3,606s
+		
+	run-fox-one-machine (16):
+		real	0m1,806s
+		user	0m10,485s
+		sys	0m1,348s
+
+	run-fox-one-machine (25):
+		real	0m3,144s
+		user	0m11,092s
+		sys	0m6,583s
+
+	run-fox-one-machine (36):
+		real	0m3,110s
+		user	0m11,666s
+		sys	0m5,686s
+
+	
+	-------------------------
+	
+	
+	run-seq:
+		real	0m5,037s
+		user	0m4,442s
+		sys	0m0,036s
+
+
+
+input900:
+
+	run-fox-machines (4):
+		real	0m5,715s
+		user	0m16,194s
+		sys	0m0,232s
+		
+	run-fox-machines (9):
+		real	0m5,526s
+		user	0m38,661s
+		sys	0m0,315s
+		
+	run-fox-machines (16):
+		real	0m3,444s
+		user	0m35,430s
+		sys	0m0,583s
+		
+	run-fox-machines (25):
+		real	0m3,327s
+		user	0m28,437s
+		sys	0m6,368s
+
+	run-fox-machines (36):
+		real	0m3,493s
+		user	0m20,397s
+		sys	0m13,975s
+		
+		
+	-------------------------
+	
+	
+	run-fox-one-machine (4):
+		real	0m6,631s
+		user	0m16,238s
+		sys	0m0,224s
+
+	run-fox-one-machine (9):
+		real	0m5,255s
+		user	0m22,402s
+		sys	0m11,775s
+
+	run-fox-one-machine (16):
+		real	0m3,516s
+		user	0m33,125s
+		sys	0m2,467s
+
+	run-fox-one-machine (25):
+		real	0m4,653s
+		user	0m34,149s
+		sys	0m14,343s
+
+	run-fox-one-machine (36):
+		real	0m4,226s
+		user	0m35,587s
+		sys	0m16,550s
+		
+		
+	-------------------------
+	
+	
+	run-seq:
+		real	0m15,978s
+		user	0m14,775s
+		sys	0m0,028s
+		
+
+
+input1200:
+	
+	run-fox-machines (4):
+		real	0m12,549s
+		user	0m44,586s
+		sys	0m0,309s
+
+	run-fox-machines (9):
+		real	0m13,080s
+		user	1m42,163s
+		sys	0m0,553s
+
+	run-fox-machines (16):
+		real	0m7,498s
+		user	1m31,914s
+		sys	0m1,072s
+
+	run-fox-machines (25):
+		real	0m5,954s
+		user	1m1,475s
+		sys	0m11,714s
+
+	run-fox-machines (36):
+		real	0m5,805s
+		user	0m46,946s
+		sys	0m22,960s
+		
+		
+	-------------------------
+	
+	
+	run-fox-one-machine (4):
+		real	0m12,493s
+		user	0m44,380s
+		sys	0m0,336s
+	
+	run-fox-one-machine (9):
+		real	0m11,180s
+		user	0m57,909s
+		sys	0m28,514s
+
+	run-fox-one-machine (16):
+		real	0m6,757s
+		user	1m28,217s
+		sys	0m4,526s
+
+	run-fox-one-machine (25):
+		real	0m8,735s
+		user	1m29,906s
+		sys	0m29,368s
+
+	run-fox-one-machine (36):
+		real	0m16,384s
+		user	1m30,443s
+		sys	0m26,776s
+		
+		
+	-------------------------
+	
+	
+	run-sec:
+		real	0m38,880s
+		user	0m38,027s
+		sys	0m0,020s
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+		
+		
+		
+		
+		
+		
+		
+
+
+
+
+
+
+
+
+
