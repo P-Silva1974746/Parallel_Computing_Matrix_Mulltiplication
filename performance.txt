@@ -19,6 +19,11 @@ input6:
 	------------------------
 	
 	
+	run-fox-one-machine (1):
+		real	0m0,635s
+		user	0m0,111s
+		sys	0m0,079s
+
 	run-fox-one-machine (4):
 		real	0m0,511s
 		user	0m0,135s
@@ -76,6 +81,11 @@ input300:
 	------------------------
 	
 	
+	run-fox-one-machine (1):
+		real	0m1,091s
+		user	0m0,616s
+		sys	0m0,080s
+
 	run-fox-one-machine (4):
 		real	0m1,366s
 		user	0m0,709s
@@ -143,6 +153,11 @@ input600:
 	------------------------
 	
 	
+	run-fox-one-machine (1):
+		real	0m5,076s
+		user	0m4,609s
+		sys	0m0,097s
+
 	run-fox-one-machine (4):
 		real	0m1,945s
 		user	0m4,909s
@@ -210,6 +225,11 @@ input900:
 	-------------------------
 	
 	
+	run-fox-one-machine (1):
+		real	0m16,918s
+		user	0m16,375s
+		sys	0m0,141s
+
 	run-fox-one-machine (4):
 		real	0m6,631s
 		user	0m16,238s
@@ -276,7 +296,11 @@ input1200:
 		
 	-------------------------
 	
-	
+	run-fox-one-machine (1):
+		real	0m42,247s
+		user	0m41,253s
+		sys	0m0,193s
+
 	run-fox-one-machine (4):
 		real	0m12,493s
 		user	0m44,380s
